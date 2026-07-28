@@ -1,0 +1,15 @@
+# Backup local da foto em resolução original (3584x4608, ~3,3 MB).
+# Não faz parte do site: o que vai ao ar é assets/raquel.jpg, já otimizada.
+# Mantido fora do repositório para não publicar a alta resolução nem
+# carregar o histórico com um binário grande.
+assets/raquel-original.jpg
+
+# Sistema operacional
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+*.swp

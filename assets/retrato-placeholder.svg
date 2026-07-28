@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-label="Espaço reservado para a fotografia">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#3E5530"/>
+      <stop offset="1" stop-color="#24331B"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="1000" fill="url(#g)"/>
+
+  <g opacity=".55" fill="none" stroke="#8FA96F" stroke-width="2.4" stroke-linecap="round">
+    <path d="M400 700 C 400 560, 400 470, 400 380"/>
+    <path d="M400 620 C 350 590, 320 545, 305 495"/>
+    <path d="M400 620 C 450 590, 480 545, 495 495"/>
+    <path d="M400 540 C 358 512, 336 472, 326 430"/>
+    <path d="M400 540 C 442 512, 464 472, 474 430"/>
+    <path d="M400 462 C 368 440, 352 408, 345 376"/>
+    <path d="M400 462 C 432 440, 448 408, 455 376"/>
+  </g>
+
+  <g fill="#E8845F" opacity=".8">
+    <circle cx="400" cy="360" r="26"/>
+    <circle cx="400" cy="360" r="11" fill="#E0BC6B"/>
+    <circle cx="305" cy="487" r="13"/>
+    <circle cx="495" cy="487" r="13"/>
+    <circle cx="326" cy="422" r="10"/>
+    <circle cx="474" cy="422" r="10"/>
+  </g>
+
+  <text x="400" y="800" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="46" fill="#FBF6EA" opacity=".9">
+    Raquel Niejelski
+  </text>
+  <text x="400" y="846" text-anchor="middle"
+        font-family="system-ui, sans-serif" font-size="17" letter-spacing="3.5" fill="#C3D4A8">
+    ADICIONE assets/raquel.jpg
+  </text>
+</svg>
