@@ -677,34 +677,62 @@ em { font-style: italic; }
 .card h3 { font-size: var(--fs-lg); margin-bottom: .5rem; color: var(--txt); }
 .card p { color: var(--txt-2); font-size: var(--fs-sm); line-height: 1.62; }
 
-/* passos */
-/* Eram 4 colunas de ~275px, o que dava 32 caracteres por linha — leitura
-   picotada. Em 2 colunas cada passo fica com ~68 caracteres, dentro da
-   faixa legível, e os 4 passos formam um 2x2 limpo. */
+/* passos — linha do tempo vertical */
+/* Os 4 passos descrevem uma sequência no tempo ("do primeiro oi até o
+   processo começar"), mas o 2x2 anterior lia como quatro itens soltos.
+   Empilhados, com o fio ligando um marcador ao outro, a ordem vira parte
+   do desenho: dá para VER que uma etapa leva à seguinte. */
 .steps {
   list-style: none; padding: 0; margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
-  gap: var(--space-lg) var(--space-lg);
+  max-width: 680px;
   counter-reset: step;
 }
-.step { position: relative; padding-top: 3.5rem; counter-increment: step; }
+.step {
+  position: relative;
+  padding: 0 0 var(--space-lg) 5.25rem;
+  counter-increment: step;
+}
+.step:last-child { padding-bottom: 0; }
+/* o marcador: número de série dentro de um medalhão com a elevação dos cards */
 .step::before {
   content: counter(step, decimal-leading-zero);
-  position: absolute; top: -.35rem; left: 0;
+  position: absolute; top: 0; left: 0;
+  width: 3.5rem; height: 3.5rem;
+  display: grid; place-items: center;
+  border: 1px solid var(--linha-forte);
+  border-radius: 50%;
+  background: var(--superficie-card);
+  box-shadow: var(--sombra-card);
   font-family: var(--serif);
-  font-size: var(--fs-2xl);       /* número grande, vira elemento visual */
+  font-size: var(--fs-lg);
   line-height: 1;
   color: var(--acento-rotulo);
 }
+/* o fio que liga um marcador ao próximo — o último passo não aponta pra nada */
 .step::after {
   content: '';
-  position: absolute; top: 2.5rem; left: 0; right: 1.5rem;
-  height: 1px; background: var(--linha);
+  position: absolute;
+  top: calc(3.5rem + .65rem);
+  bottom: .65rem;
+  left: calc(1.75rem - .5px);
+  width: 1px;
+  background: var(--linha-forte);
 }
-.step:last-child::after { right: 0; }
-.step h3 { font-size: var(--fs-lg); margin-bottom: .55rem; }
+.step:last-child::after { content: none; }
+.step h3 { font-size: var(--fs-lg); margin-bottom: .55rem; padding-top: .5rem; }
 .step p { color: var(--txt-2); font-size: var(--fs-sm); line-height: 1.62; }
+
+@media (max-width: 700px) {
+  .step { padding-left: 4.25rem; padding-bottom: var(--space-md); }
+  .step:last-child { padding-bottom: 0; }
+  .step::before { width: 3rem; height: 3rem; font-size: var(--fs-md); }
+  .step::after {
+    left: calc(1.5rem - .5px);
+    top: calc(3rem + .5rem);
+    bottom: .5rem;
+  }
+  .step h3 { padding-top: .3rem; }
+}
 
 /* pilares — numerados "01." em 24px, como na referência */
 .pillars {
@@ -731,35 +759,130 @@ em { font-style: italic; }
 }
 .pillar p { color: var(--txt-2); font-size: var(--fs-sm); line-height: 1.62; }
 
-/* FAQ */
+/* FAQ — acordeão numerado */
+/* Um item aberto por vez: a pergunta aberta ganha o medalhão coral e o
+   fio aceso embaixo, então o olho sempre sabe onde está. Toda a mecânica
+   de abrir/fechar depende de JS; por isso o estado FECHADO só existe sob
+   `.js` — sem script, todas as respostas ficam à mostra, como no resto
+   do site. */
 .faq { max-width: 780px; margin-inline: auto; }
-.faq details { border-bottom: 1px solid var(--linha); }
-.faq summary {
-  cursor: pointer;
-  list-style: none;
-  padding: 1.5rem 2.5rem 1.5rem 0;
+
+.faq__trigger {
+  width: 100%;
+  display: flex; align-items: center; gap: 1.25rem;
   position: relative;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--linha);
+  padding: 1.4rem .25rem;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+/* número em medalhão: o disco coral cresce atrás do número quando o item
+   abre, e dá só um indício (85% do tamanho, quase transparente) no hover */
+.faq__num {
+  position: relative;
+  flex: 0 0 auto;
+  width: 2.5rem; height: 2.5rem;
+  display: grid; place-items: center;
+}
+.faq__num-fill {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: var(--acento-icone);
+  transform: scale(0);
+  opacity: 0;
+  transition: transform .35s var(--ease), opacity .35s var(--ease);
+}
+.faq__num-text {
+  position: relative;
+  font-family: var(--sans);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: .08em;
+  color: var(--txt-2);
+  transition: color .25s var(--ease);
+}
+.faq__trigger:hover .faq__num-fill { transform: scale(.85); opacity: .14; }
+.faq__item.is-open .faq__num-fill  { transform: scale(1); opacity: 1; }
+.faq__item.is-open .faq__num-text  { color: var(--ink); }  /* 5.3:1 no coral */
+
+.faq__question {
+  flex: 1;
   font-size: var(--fs-lg);
-  line-height: 1.4;
+  line-height: 1.35;
+  color: var(--txt-2);
+  transition: color .25s var(--ease), transform .3s var(--ease);
+}
+.faq__trigger:hover .faq__question,
+.faq__item.is-open .faq__question { color: var(--txt); transform: translateX(4px); }
+
+/* o "+" gira 45° e vira "×" — mesmo desenho, dois estados */
+.faq__icon {
+  flex: 0 0 auto;
   color: var(--txt);
-  transition: color .2s var(--ease);
+  opacity: .45;
+  transition: transform .35s var(--ease), opacity .25s var(--ease);
 }
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary:hover { color: var(--acento-rotulo); }
-.faq summary::after {
-  content: '';
-  position: absolute; right: .5rem; top: 50%;
-  width: 11px; height: 11px;
-  border-right: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
-  transform: translateY(-65%) rotate(45deg);
-  transition: transform .3s var(--ease);
+.faq__trigger:hover .faq__icon { opacity: 1; }
+.faq__item.is-open .faq__icon  { opacity: 1; transform: rotate(45deg); }
+
+/* fio aceso sobre a linha-base do item: cresce da esquerda, um terço no
+   hover, inteiro quando aberto */
+.faq__underline {
+  position: absolute; left: 0; right: 0; bottom: -1px;
+  height: 1px;
+  background: var(--acento-icone);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s var(--ease);
 }
-.faq details[open] summary::after { transform: translateY(-25%) rotate(-135deg); }
-.faq__answer { padding: 0 2.5rem 2rem 0; color: var(--txt-2); }
+.faq__trigger:hover .faq__underline { transform: scaleX(.3); }
+.faq__item.is-open .faq__underline  { transform: scaleX(1); }
+
+/* A altura anima pelo truque das linhas de grid (0fr → 1fr): nada de medir
+   scrollHeight em JS. `visibility` acompanha para tirar o conteúdo fechado
+   da ordem de tabulação e dos leitores de tela. */
+.faq__panel { display: grid; grid-template-rows: 1fr; }
+.faq__panel-inner {
+  overflow: hidden;
+  min-height: 0;
+  padding: 1.15rem 2.5rem 1.9rem 3.75rem;
+  color: var(--txt-2);
+}
+.js .faq__panel {
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .45s var(--ease);
+}
+/* O padding vertical entra na conta junto com a altura. Sem isto o item
+   fechado colapsa o texto mas mantém os ~3rem de padding, e a lista fica
+   com um vão morto entre cada pergunta. */
+.js .faq__panel-inner {
+  padding-block: 0;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: grid-template-rows .45s var(--ease),
+              padding-block .45s var(--ease),
+              visibility .45s,
+              opacity .3s var(--ease),
+              transform .45s var(--ease);
+}
+.js .faq__item.is-open .faq__panel { grid-template-rows: 1fr; }
+.js .faq__item.is-open .faq__panel-inner {
+  padding-block: 1.15rem 1.9rem;
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+}
+
 @media (max-width: 600px) {
-  .faq summary { padding-right: 2rem; }
-  .faq__answer { padding-right: 0; }   /* nada à direita compete com a seta aqui */
+  .faq__trigger { gap: .9rem; }
+  .faq__num { width: 2.1rem; height: 2.1rem; }
+  .faq__panel-inner { padding-left: 0; padding-right: 0; }
 }
 
 /* CTA final — coluna estreita e centrada, título maior (58px na referência) */
@@ -907,27 +1030,7 @@ em { font-style: italic; }
   }
 }
 
-/* ---------- 2. FAQ com abertura suave ----------
-   TENTATIVA DESCARTADA: animar a altura via `::details-content` +
-   `interpolate-size: allow-keywords`. `CSS.supports` reporta os dois como
-   suportados, mas na prática o `[open]::details-content` não aplica neste
-   motor — com `open` a resposta continuava em `block-size: 0` e
-   `content-visibility: hidden`, ou seja, a FAQ parava de abrir.
-
-   O que ficou é deliberadamente mais modesto e não tem como quebrar: a
-   resposta entra com fade e um leve deslocamento. A animação não controla
-   visibilidade nem altura — se ela não rodar, o conteúdo aparece normal. */
-@keyframes faq-abre {
-  from { opacity: 0; transform: translateY(-6px); }
-}
-.faq details[open] .faq__answer {
-  animation: faq-abre .34s var(--ease);
-}
-@media (prefers-reduced-motion: reduce) {
-  .faq details[open] .faq__answer { animation: none; }
-}
-
-/* ---------- 3. Hover dos cards ----------
+/* ---------- 2. Hover dos cards ----------
    Só passou a funcionar depois de corrigir o conflito de especificidade com
    `.reveal`: antes a transição do componente era substituída inteira. */
 .card__icon { transition: color .25s var(--ease), transform .25s var(--ease); }
@@ -950,7 +1053,6 @@ em { font-style: italic; }
    compactar o rodapé, que ocupava 1,2 tela para 48 palavras. */
 @media (max-width: 700px) {
   .pillars { gap: var(--space-md); }
-  .steps   { gap: var(--space-md); }
   .site-footer { padding-top: var(--space-lg); }
   .site-footer__grid { gap: var(--space-md); padding-bottom: var(--space-md); }
   /* e-mail longo não pode empurrar a largura da página */
