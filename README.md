@@ -187,6 +187,18 @@ retrato ganha também um halo dourado radial atrás.
 **Paleta VERDE** — superfícies escuras com texto claro. A escala nasceu do verde
 da faixa de citação (`--g600`), que virou a cor oficial do site.
 
+### Por que existe uma superfície clara
+
+A versão anterior era **99% escura** e as **727 palavras do site eram lidas
+sobre fundo escuro**. Isso não é monotonia — é fadiga. Texto claro sobre
+fundo escuro causa *halação* (a letra parece sangrar no fundo), tolerável
+num hero ou numa faixa curta, mas não ao longo de 9.100px.
+
+A solução foi introduzir **uma** superfície clara de areia para as duas
+seções de leitura mais pesada, sem inverter o site. Resultado medido:
+**28% da página em superfície clara**, com **269 das 727 palavras** lidas
+em fundo claro, e as 9 transições entre seções todas perceptíveis.
+
 Superfícies:
 
 | Token | Hex | Matiz | Lum | Uso |

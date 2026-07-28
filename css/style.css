@@ -10,34 +10,65 @@
 
 /* ---------- tokens ---------- */
 :root {
+
   /* ---- superfícies ----
-     A monotonia não se resolve só clareando: verde mais claro que #5F7F49
-     reprova em contraste com qualquer texto. Então a variedade vem de
-     VARIAR O MATIZ — duas superfícies oliva quentes (46-49°) cortam a
-     sequência de verdes (97-100°). Amplitude de luminosidade: 9% a 33%. */
-  --ink:   #141C10;  /* quase preto esverdeado — rodapé, abordagem, faixa 1 */
-  --g800:  #22301B;  /* verde profundo — dúvidas                            */
-  --g700:  #38502C;  /* verde principal — hero, é pra você, como funciona   */
-  --g600:  #4F6B3D;  /* o verde da referência — faixa de citação 2          */
-  --warm:  #2E2A18;  /* OLIVA QUENTE (49°) — seção Sobre                    */
-  --warm-2:#3A3420;  /* oliva um tom acima (46°) — chamada final            */
-  --g500:  #5F7F49;  /* SÓ borda/decoração — reprova em texto               */
+     99% da página era escura e as 727 palavras eram lidas sobre fundo
+     escuro. Isso causa halação (a letra clara sangra no fundo) e cansa em
+     leitura longa. A saída foi introduzir UMA superfície clara de areia
+     para as seções de leitura pesada, sem inverter o site. */
+  --ink:   #181F14;  /* quase preto — rodapé, abordagem, faixa 1 */
+  --g700:  #3A4832;  /* verde principal — hero, sobre, dúvidas   */
+  --g600:  #506742;  /* faixa de citação e chamada final         */
+  --areia:      #E8E2D0;  /* superfície CLARA — é pra você, como funciona */
+  --areia-card: #DDD5BF;  /* cards sobre areia                            */
+  --g500:  #5F7F49;  /* SÓ borda/decoração — reprova em texto    */
 
-  --g900: var(--ink);          /* compatibilidade com regras antigas */
+  --g800: var(--ink);          /* compatibilidade com regras antigas */
+  --g900: var(--ink);
 
-  /* texto sobre verde */
-  --cream:   #FBF6EA;   /* principal   — 8.3:1 no g700, 10.6:1 no g800 */
-  --cream-2: #DCE3CD;   /* secundário  — 6.8:1 no g700, 8.6:1 no g800  */
-  --sage-pale: #C3D4A8; /* terciário   — 5.7:1 no g700                 */
+  /* texto sobre escuro */
+  --cream:   #F7F4E8;   /* 8.9:1 no g700 · 15.3:1 no ink */
+  --cream-2: #D3DBC4;   /* 6.8:1 no g700 · 11.8:1 no ink */
+  --sage-pale: #BCC9A6; /* 5.6:1 no g700                 */
 
-  /* acentos */
-  --coral:      #E8845F;  /* botões (com texto g900) e texto no g900 */
-  --coral-soft: #F09A78;  /* hover                                    */
-  --gold:       #E0BC6B;  /* rótulos/eyebrows — 4.9:1 no g700 ✓       */
+  /* texto sobre areia */
+  --tinta:   #232A1C;   /* 11.4:1 na areia */
+  --tinta-2: #4F5744;   /*  5.8:1 na areia */
+
+  /* acentos — dois jogos, porque o dourado REPROVA sobre areia (3.9:1) */
+  --coral:      #E8845F;  /* sobre escuro                    */
+  --coral-soft: #F09A78;  /* hover                           */
+  --gold:       #DDB863;  /* rótulos sobre escuro — 5.2:1    */
+  --coral-esc:  #A8451F;  /* ícones sobre areia              */
+  --verde-esc:  #3F5730;  /* rótulos sobre areia — 6.2:1     */
 
   /* linhas */
   --line:        rgba(195, 212, 168, .20);
   --line-strong: rgba(195, 212, 168, .38);
+
+  /* ---- tokens semânticos ----
+     Os componentes usam ESTES, nunca as cores diretas. Assim uma seção
+     clara só precisa redefinir o bloco, e cards, rótulos, ícones, linhas
+     e textos se ajustam sozinhos. Padrão = tema escuro. */
+  --superficie:      var(--g700);
+  --superficie-card: var(--ink);
+  --txt:             var(--cream);
+  --txt-2:           var(--cream-2);
+  --linha:           var(--line);
+  --linha-forte:     var(--line-strong);
+  --acento-rotulo:   var(--gold);
+  --acento-icone:    var(--coral);
+
+  /* Elevação também é temática: em fundo escuro o volume vem do fio de luz
+     na aresta de cima; em fundo claro, de sombra difusa comum. */
+  --sombra-card:
+    inset 0 1px 0 rgba(219, 232, 199, .11),
+    0 2px 4px rgba(0, 0, 0, .18),
+    0 10px 28px -14px rgba(0, 0, 0, .45);
+  --sombra-card-hover:
+    inset 0 1px 0 rgba(219, 232, 199, .20),
+    0 4px 8px rgba(0, 0, 0, .22),
+    0 18px 44px -18px rgba(0, 0, 0, .55);
 
   /* ---- tipografia ---- */
   --serif: 'Sorts Mill Goudy', Georgia, 'Times New Roman', serif;
@@ -139,7 +170,7 @@ main > section[id] { scroll-margin-top: 7rem; }
 .skip-link:focus { left: 1rem; top: 1rem; }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--acento-rotulo);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -150,7 +181,7 @@ main > section[id] { scroll-margin-top: 7rem; }
   font-weight: 500;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--acento-rotulo);
   margin: 0 0 var(--space-sm);
   display: flex;
   align-items: center;
@@ -160,14 +191,14 @@ main > section[id] { scroll-margin-top: 7rem; }
   content: '';
   flex: 0 0 44px;
   height: 1px;
-  background: var(--line-strong);
+  background: var(--linha-forte);
 }
 .eyebrow--center { justify-content: center; }
 .eyebrow--center::before {
   content: '';
   flex: 0 0 44px;
   height: 1px;
-  background: var(--line-strong);
+  background: var(--linha-forte);
   order: -1;
 }
 
@@ -524,11 +555,31 @@ em { font-style: italic; }
 
 /* ---------- seções ----------
    100px acima e abaixo, como na referência (com folga menor no mobile). */
-.section { padding: clamp(4rem, 9vw, 6rem) 0; background: var(--g700); }
-.section--tint { background: var(--g800); }
-.section--deep { background: var(--g800); }
-.section--dark { background: var(--ink); }
-.section--warm { background: var(--warm); }   /* quebra de matiz: 49° */
+.section { padding: clamp(4rem, 9vw, 6rem) 0; background: var(--superficie); color: var(--txt); }
+.section--tint,
+.section--deep,
+.section--warm { --superficie: var(--g700); }
+.section--dark { --superficie: var(--ink); --superficie-card: #10150D; }
+
+/* Seção clara. Redefine o tema inteiro: os componentes leem os tokens
+   semânticos, então card, rótulo, ícone, linha e texto se ajustam juntos.
+   O dourado sai de cena aqui — reprova em contraste sobre areia (3.9:1). */
+.section--areia {
+  --superficie:      var(--areia);
+  --superficie-card: var(--areia-card);
+  --txt:             var(--tinta);
+  --txt-2:           var(--tinta-2);
+  --linha:           rgba(35, 42, 28, .17);
+  --linha-forte:     rgba(35, 42, 28, .32);
+  --acento-rotulo:   var(--verde-esc);
+  --acento-icone:    var(--coral-esc);
+  --sombra-card:
+    0 1px 2px rgba(35, 42, 28, .10),
+    0 8px 22px -14px rgba(35, 42, 28, .35);
+  --sombra-card-hover:
+    0 2px 5px rgba(35, 42, 28, .13),
+    0 16px 36px -16px rgba(35, 42, 28, .45);
+}
 
 /* containers estreitos: FAQ e chamada final são colunas centradas */
 .container--narrow     { width: min(100% - 2.5rem, var(--narrow)); }
@@ -536,7 +587,7 @@ em { font-style: italic; }
 
 .section__head { max-width: 52ch; margin-bottom: var(--space-lg); }
 .section__head--center { margin-inline: auto; text-align: center; }
-.section__head p { color: var(--cream-2); margin-top: var(--space-sm); }
+.section__head p { color: var(--txt-2); margin-top: var(--space-sm); }
 
 /* sobre */
 .about__grid {
@@ -545,7 +596,7 @@ em { font-style: italic; }
   gap: clamp(2.5rem, 6vw, 5rem);
   align-items: center;
 }
-.about__grid p { color: var(--cream-2); }
+.about__grid p { color: var(--txt-2); }
 .about__facts {
   list-style: none; padding: 0;
   margin: var(--space-md) 0 0;
@@ -553,10 +604,10 @@ em { font-style: italic; }
 }
 .about__facts li {
   display: flex; gap: .85rem; align-items: flex-start;
-  color: var(--cream-2);
+  color: var(--txt-2);
   font-size: var(--fs-sm);
 }
-.about__facts svg { flex: 0 0 auto; margin-top: .38rem; color: var(--gold); }
+.about__facts svg { flex: 0 0 auto; margin-top: .38rem; color: var(--acento-rotulo); }
 @media (max-width: 860px) {
   .about__grid { grid-template-columns: 1fr; }
 }
@@ -571,36 +622,30 @@ em { font-style: italic; }
    quase não aparece; o volume vem do fio claro na aresta de cima (simula
    luz vindo de acima) somado a uma sombra difusa que apoia a peça no fundo. */
 .card {
-  background: var(--g800);           /* creme sobre g800 = 10.6:1 ✓ */
-  border: 1px solid var(--line);
+  background: var(--superficie-card);
+  border: 1px solid var(--linha);
   border-radius: 3px;
   padding: var(--space-md) var(--space-sm) var(--space-sm);
-  box-shadow:
-    inset 0 1px 0 rgba(219, 232, 199, .11),   /* fio de luz no topo */
-    0 2px 4px rgba(0, 0, 0, .18),
-    0 10px 28px -14px rgba(0, 0, 0, .45);
+  box-shadow: var(--sombra-card);
   transition: border-color .3s var(--ease),
               box-shadow .3s var(--ease),
               transform .3s var(--ease);
 }
-.section--tint .card { background: var(--g900); }
+
 .card:hover {
   border-color: var(--line-strong);
   transform: translateY(-3px);
-  box-shadow:
-    inset 0 1px 0 rgba(219, 232, 199, .20),
-    0 4px 8px rgba(0, 0, 0, .22),
-    0 18px 44px -18px rgba(0, 0, 0, .55);
+  box-shadow: var(--sombra-card-hover);
 }
 /* ícones em coral: 3.4:1 sobre o verde principal — acima do mínimo de 3:1
    exigido para elementos gráficos, e muito mais vivo que o dourado */
 .card__icon {
-  color: var(--coral);
+  color: var(--acento-icone);
   margin-bottom: var(--space-sm);
   display: block;
 }
-.card h3 { font-size: var(--fs-lg); margin-bottom: .5rem; color: var(--cream); }
-.card p { color: var(--cream-2); font-size: var(--fs-sm); line-height: 1.62; }
+.card h3 { font-size: var(--fs-lg); margin-bottom: .5rem; color: var(--txt); }
+.card p { color: var(--txt-2); font-size: var(--fs-sm); line-height: 1.62; }
 
 /* passos */
 /* Eram 4 colunas de ~275px, o que dava 32 caracteres por linha — leitura
@@ -620,16 +665,16 @@ em { font-style: italic; }
   font-family: var(--serif);
   font-size: var(--fs-2xl);       /* número grande, vira elemento visual */
   line-height: 1;
-  color: var(--gold);
+  color: var(--acento-rotulo);
 }
 .step::after {
   content: '';
   position: absolute; top: 2.5rem; left: 0; right: 1.5rem;
-  height: 1px; background: var(--line);
+  height: 1px; background: var(--linha);
 }
 .step:last-child::after { right: 0; }
 .step h3 { font-size: var(--fs-lg); margin-bottom: .55rem; }
-.step p { color: var(--cream-2); font-size: var(--fs-sm); line-height: 1.62; }
+.step p { color: var(--txt-2); font-size: var(--fs-sm); line-height: 1.62; }
 
 /* pilares — numerados "01." em 24px, como na referência */
 .pillars {
@@ -649,16 +694,16 @@ em { font-style: italic; }
 }
 .pillar h3::before {
   content: counter(pilar, decimal-leading-zero);
-  color: var(--coral);            /* 6.6:1 sobre o quase-preto */
+  color: var(--acento-icone);            /* 6.6:1 sobre o quase-preto */
   font-size: var(--fs-2xl);
   line-height: 1;
   flex: 0 0 auto;
 }
-.pillar p { color: var(--cream-2); font-size: var(--fs-sm); line-height: 1.62; }
+.pillar p { color: var(--txt-2); font-size: var(--fs-sm); line-height: 1.62; }
 
 /* FAQ */
 .faq { max-width: 780px; margin-inline: auto; }
-.faq details { border-bottom: 1px solid var(--line); }
+.faq details { border-bottom: 1px solid var(--linha); }
 .faq summary {
   cursor: pointer;
   list-style: none;
@@ -666,11 +711,11 @@ em { font-style: italic; }
   position: relative;
   font-size: var(--fs-lg);
   line-height: 1.4;
-  color: var(--cream);
+  color: var(--txt);
   transition: color .2s var(--ease);
 }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary:hover { color: var(--gold); }
+.faq summary:hover { color: var(--acento-rotulo); }
 .faq summary::after {
   content: '';
   position: absolute; right: .5rem; top: 50%;
@@ -681,12 +726,12 @@ em { font-style: italic; }
   transition: transform .3s var(--ease);
 }
 .faq details[open] summary::after { transform: translateY(-25%) rotate(-135deg); }
-.faq__answer { padding: 0 3rem 2rem 0; color: var(--cream-2); }
+.faq__answer { padding: 0 3rem 2rem 0; color: var(--txt-2); }
 
 /* CTA final — coluna estreita e centrada, título maior (58px na referência) */
 .cta-final {
   position: relative;
-  background: var(--warm-2);      /* segunda quebra de matiz: 46° */
+  background: var(--g600);
   color: var(--cream);
   padding: clamp(4rem, 9vw, 6rem) 0;
   text-align: center;
@@ -702,7 +747,10 @@ em { font-style: italic; }
 }
 .cta-final__inner { position: relative; }
 .cta-final h2 { font-size: clamp(var(--fs-2xl), 4.6vw, var(--fs-4xl)); line-height: 1.08; }
-.cta-final p { color: var(--cream-2); margin: var(--space-sm) 0 var(--space-md); }
+/* Creme cheio, não o secundário: sobre o --g600 o --cream-2 dá 4.38:1 e
+   reprova por pouco. É a mesma regra da faixa de citação — neste verde só
+   o texto principal passa. */
+.cta-final p { color: var(--cream); margin: var(--space-sm) 0 var(--space-md); }
 
 /* rodapé */
 .site-footer {

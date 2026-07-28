@@ -13,3 +13,7 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
+
+# Página de comparação de paletas — material de trabalho, não do site
+paretas-tmp
+paletas.html
