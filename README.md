@@ -111,6 +111,58 @@ hero 68px, botão em pílula (raio 100px) de 18px em caixa normal, seções com
   (nunca negrito), entrelinha justa nos títulos. É ela que dá o ar literário.
 - `Jost` — apenas rótulos, menu e botões, em caixa alta com espaçamento largo.
 
+### Escala modular — razão 1.2, ancorada no corpo
+
+Havia 13 tamanhos escolhidos um a um, com razões entre degraus variando de
+**1.06 a 1.39** — ou seja, escala nenhuma. Agora todo tamanho sai destes
+tokens (`--fs-*` no topo do CSS):
+
+| Token | px | Onde |
+|---|---|---|
+| `--fs-2xs` | 11,0 | rótulos do rodapé |
+| `--fs-xs` | 13,2 | menu, eyebrow |
+| `--fs-sm` | 15,8 | texto de card |
+| `--fs-md` | **19,0** | **corpo — âncora da escala** |
+| `--fs-lg` | 22,8 | lead, título de card, botão |
+| `--fs-xl` | 27,4 | citação menor |
+| `--fs-2xl` | 32,8 | citação maior |
+| `--fs-3xl` | 47,3 | título de seção |
+| `--fs-4xl` | 56,7 | título da chamada final |
+| `--fs-5xl` | 68,0 | título do hero |
+
+Medido na página: **10 tamanhos**, com razões entre degraus vizinhos de
+**1,197 a 1,203** — mais um salto de 1,44 entre a citação maior e o título
+de seção, que é exatamente 1,2² (dois degraus). Todo intervalo é uma
+potência da mesma razão.
+
+**Entrelinha por papel:** `--lh-display` 1.05 · `--lh-titulo` 1.28 ·
+`--lh-corpo` 1.72. Antes doze títulos herdavam a entrelinha do corpo e um
+`h3` de 21px ficava com 37px entre linhas, parecendo parágrafo.
+
+### Espaçamento base 8
+
+Todo valor de `padding`, `margin` e `gap` é múltiplo de 8px. Havia
+30/56/100/128 e gaps de 20/24/40/64 sem base comum.
+
+### Profundidade por luz
+
+Em paleta escura a sombra preta quase não aparece. O volume vem de um
+**fio claro de 1px na aresta superior** (`inset 0 1px 0`), simulando luz
+vindo de cima, somado a uma sombra difusa que apoia a peça no fundo. O
+retrato ganha também um halo dourado radial atrás.
+
+> ⚠️ `.portrait-wrap` tem `z-index: 0` de propósito. Sem esse contexto de
+> empilhamento, o `::after` de z-index negativo é pintado **antes** dos
+> fundos das seções (ordem de pintura do CSS) e a moldura deslocada
+> simplesmente não aparece.
+
+> ⚠️ A revelação no scroll usa `animation`, não `transition`. A versão
+> anterior declarava `transition` em `.reveal` e, por ter especificidade
+> maior que `.card`, substituía o shorthand inteiro do componente — o hover
+> do card perdia a animação de borda e ficava em 0,55s. Também **não** usa
+> `forwards`: com fill-mode a última keyframe travaria o `transform` e o
+> `translateY(-3px)` do hover pararia de funcionar.
+
 **Paleta VERDE** — superfícies escuras com texto claro. A escala nasceu do verde
 da faixa de citação (`--g600`), que virou a cor oficial do site.
 

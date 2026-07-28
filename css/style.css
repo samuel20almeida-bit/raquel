@@ -37,9 +37,30 @@
   --line:        rgba(195, 212, 168, .20);
   --line-strong: rgba(195, 212, 168, .38);
 
-  /* tipografia */
+  /* ---- tipografia ---- */
   --serif: 'Sorts Mill Goudy', Georgia, 'Times New Roman', serif;
   --sans:  'Jost', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Escala modular — razão 1.2 (terça menor), ancorada no corpo de 19px.
+     Antes havia 13 tamanhos escolhidos um a um, com razões entre degraus
+     variando de 1.06 a 1.39: na prática, escala nenhuma. Agora todo
+     tamanho do site sai desta lista. Em rem sobre raiz de 16px. */
+  --fs-2xs: 0.688rem;   /* 11.0 — rótulos micro          */
+  --fs-xs:  0.825rem;   /* 13.2 — menu, eyebrow          */
+  --fs-sm:  0.988rem;   /* 15.8 — botões, texto de card  */
+  --fs-md:  1.1875rem;  /* 19.0 — CORPO (âncora)         */
+  --fs-lg:  1.425rem;   /* 22.8 — lead, título de card   */
+  --fs-xl:  1.713rem;   /* 27.4 — citação menor          */
+  --fs-2xl: 2.05rem;    /* 32.8 — citação maior          */
+  --fs-3xl: 2.956rem;   /* 47.3 — título de seção        */
+  --fs-4xl: 3.544rem;   /* 56.7 — título da chamada      */
+  --fs-5xl: 4.25rem;    /* 68.0 — título do hero         */
+
+  /* Entrelinha por papel. Títulos herdavam 1.72 do corpo — um h3 de 21px
+     ficava com 37px entre linhas, parecendo texto corrido. */
+  --lh-display: 1.05;
+  --lh-titulo:  1.28;
+  --lh-corpo:   1.72;
 
   /* espaçamento generoso */
   --space-2xs: .5rem;
@@ -66,13 +87,23 @@ body {
   background: var(--g700);
   color: var(--cream);
   font-family: var(--serif);
-  font-size: 1.1875rem;
+  font-size: var(--fs-md);
   line-height: 1.72;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;            /* clip (e não hidden) preserva o sticky do header */
 }
 img { max-width: 100%; height: auto; display: block; }
-h1, h2, h3, h4 { font-weight: 400; margin: 0; letter-spacing: -0.005em; }
+
+/* BUG CORRIGIDO: sem esta linha os títulos herdavam a entrelinha do corpo
+   (1.72). Doze deles — h3 dos cards, dos passos e h4 do rodapé — ficavam
+   frouxos como parágrafo. */
+h1, h2, h3, h4 {
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: -0.005em;
+  line-height: var(--lh-titulo);
+  text-wrap: balance;
+}
 p { margin: 0 0 1.15em; }
 p:last-child { margin-bottom: 0; }
 ::selection { background: var(--coral); color: var(--g900); }
@@ -95,8 +126,8 @@ p:last-child { margin-bottom: 0; }
 .skip-link {
   position: absolute; left: -9999px;
   background: var(--cream); color: var(--g900);
-  padding: .75rem 1.25rem; z-index: 200;
-  font-family: var(--sans); font-size: .875rem;
+  padding: 1rem 1.5rem; z-index: 200;
+  font-family: var(--sans); font-size: var(--fs-sm);
 }
 .skip-link:focus { left: 1rem; top: 1rem; }
 
@@ -108,7 +139,7 @@ p:last-child { margin-bottom: 0; }
 
 .eyebrow {
   font-family: var(--sans);
-  font-size: .75rem;
+  font-size: var(--fs-xs);
   font-weight: 500;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -135,22 +166,24 @@ p:last-child { margin-bottom: 0; }
 
 /* ---------- tipografia de display ---------- */
 /* Escala calcada na referência: hero 68px, títulos de seção 48px. */
+/* Todos os degraus abaixo saem da escala. O mínimo do clamp é sempre dois
+   degraus abaixo do máximo, então a proporção se mantém no mobile. */
 .display-xl {
-  font-size: clamp(2.6rem, 5.6vw, 4.25rem);   /* → 68px no desktop */
-  line-height: 1.04;
+  font-size: clamp(var(--fs-2xl), 5.6vw, var(--fs-5xl));   /* 32.8 → 68 */
+  line-height: var(--lh-display);
   letter-spacing: -0.016em;
 }
 .display-lg {
-  font-size: clamp(1.95rem, 3.9vw, 3rem);     /* → 48px no desktop */
+  font-size: clamp(var(--fs-xl), 3.9vw, var(--fs-3xl));    /* 27.4 → 47.3 */
   line-height: 1.1;
   letter-spacing: -0.012em;
 }
 .display-md {
-  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
-  line-height: 1.24;
+  font-size: clamp(var(--fs-lg), 2.4vw, var(--fs-xl));     /* 22.8 → 27.4 */
+  line-height: var(--lh-titulo);
 }
 .lead {
-  font-size: clamp(1.15rem, 1.7vw, 1.375rem);
+  font-size: clamp(var(--fs-md), 1.7vw, var(--fs-lg));     /* 19 → 22.8 */
   line-height: 1.66;
   color: var(--cream-2);
 }
@@ -165,9 +198,9 @@ em { font-style: italic; }
   justify-content: center;
   gap: .65rem;
   min-height: 60px;
-  padding: 1.25rem 2.5rem;
+  padding: 1.5rem 2.5rem;
   font-family: var(--sans);
-  font-size: 1.125rem;          /* 18px, como na referência */
+  font-size: var(--fs-md);      /* 19px — degrau-âncora da escala */
   font-weight: 400;
   line-height: 1;
   letter-spacing: .01em;
@@ -218,17 +251,17 @@ em { font-style: italic; }
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
-  padding: 1.15rem 0;
+  padding: 1.5rem 0;
 }
 .brand {
   text-decoration: none; color: var(--cream);
   line-height: 1.2; padding: .3rem 0; display: block;
 }
-.brand__name { display: block; font-size: 1.3rem; }
+.brand__name { display: block; font-size: var(--fs-lg); }
 .brand__crp {
   display: block;
   font-family: var(--sans);
-  font-size: .6875rem;
+  font-size: var(--fs-2xs);
   letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--sage-pale);
@@ -241,7 +274,7 @@ em { font-style: italic; }
 }
 .nav__list a {
   font-family: var(--sans);
-  font-size: .8125rem;
+  font-size: var(--fs-xs);
   letter-spacing: .08em;
   color: var(--cream-2);
   text-decoration: none;
@@ -261,7 +294,7 @@ em { font-style: italic; }
 .nav__list a:hover { color: var(--cream); }
 .nav__list a:hover::after { width: 100%; }
 
-.nav__cta { padding: .65rem 1.6rem; min-height: 44px; font-size: .95rem; }
+.nav__cta { padding: .5rem 1.5rem; min-height: 44px; font-size: var(--fs-sm); }
 
 .nav-toggle {
   display: none;
@@ -283,7 +316,7 @@ em { font-style: italic; }
     position: absolute; inset: 100% 0 auto 0;
     background: var(--g900);
     border-block: 1px solid var(--line);
-    padding: var(--space-sm) 1.25rem var(--space-md);
+    padding: var(--space-sm) 1.5rem var(--space-md);
     gap: var(--space-xs);
   }
   .nav.is-open .nav__cta { display: inline-flex; }
@@ -327,7 +360,7 @@ em { font-style: italic; }
 .hero__note {
   margin-top: var(--space-md);
   font-family: var(--sans);
-  font-size: .875rem;
+  font-size: var(--fs-sm);
   letter-spacing: .04em;
   color: var(--sage-pale);
 }
@@ -345,6 +378,10 @@ em { font-style: italic; }
   background-size: 200px 200px;
   aspect-ratio: 550 / 716;
   border: 1px solid var(--line-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(219, 232, 199, .14),
+    0 4px 10px rgba(0, 0, 0, .28),
+    0 28px 64px -30px rgba(0, 0, 0, .70);
 }
 .portrait img {
   width: 100%; height: 100%;
@@ -366,9 +403,27 @@ em { font-style: italic; }
   background: linear-gradient(to top, rgba(32, 48, 26, .58), transparent);
   pointer-events: none;
 }
-.portrait--framed { box-shadow: 0 22px 60px -30px rgba(0, 0, 0, .65); }
+/* BUG CORRIGIDO: a elevação do retrato tinha sumido. A classe
+   `.portrait--framed` deixou de ser usada quando o arco virou retângulo, e
+   com ela o site ficou com uma única sombra no total (a do botão
+   flutuante). Agora a elevação está na própria `.portrait`. */
 
-.portrait-wrap { position: relative; }
+/* `z-index: 0` cria contexto de empilhamento aqui de propósito. Sem ele o
+   ::after de z-index negativo é pintado ANTES do fundo das seções (ordem de
+   pintura do CSS: filhos com z-index negativo vêm antes dos fundos de
+   blocos não posicionados) — ou seja, a moldura ficava escondida atrás do
+   verde e nunca aparecia. */
+.portrait-wrap { position: relative; z-index: 0; }
+
+.portrait-wrap::before {         /* halo de luz — dá ar ao redor da foto */
+  content: '';
+  position: absolute;
+  inset: -14% -16%;
+  background: radial-gradient(ellipse at 50% 42%,
+              rgba(224, 188, 107, .13), transparent 68%);
+  z-index: -2;
+  pointer-events: none;
+}
 .portrait-wrap::after {          /* moldura deslocada, tipo passe-partout */
   content: '';
   position: absolute;
@@ -409,7 +464,7 @@ em { font-style: italic; }
 }
 .quote-strip cite {
   font-style: normal;
-  font-size: .74em;
+  font-size: var(--fs-xs);
   white-space: nowrap;
 }
 
@@ -417,9 +472,9 @@ em { font-style: italic; }
 .quote-strip--dark {
   background: var(--g900);
   color: var(--cream);
-  padding: clamp(1.6rem, 2.6vw, 1.9rem) 0;
+  padding: clamp(1.5rem, 2.6vw, 2rem) 0;
 }
-.quote-strip--dark blockquote { font-size: clamp(1.2rem, 2.4vw, 2.2rem); }
+.quote-strip--dark blockquote { font-size: clamp(var(--fs-lg), 2.4vw, var(--fs-2xl)); }
 .quote-strip--dark cite { color: var(--sage-pale); }
 
 /* variante no verde da referência — corta a página no meio (~185px).
@@ -428,14 +483,14 @@ em { font-style: italic; }
 .quote-strip--mid {
   background: var(--g600);
   color: var(--cream);
-  padding: clamp(2.25rem, 4vw, 3.5rem) 0;
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
 }
-.quote-strip--mid blockquote { font-size: clamp(1.1rem, 1.95vw, 1.75rem); }
+.quote-strip--mid blockquote { font-size: clamp(var(--fs-md), 1.95vw, var(--fs-xl)); }
 .quote-strip--mid cite { color: var(--cream); opacity: .88; }
 
 /* ---------- seções ----------
    100px acima e abaixo, como na referência (com folga menor no mobile). */
-.section { padding: clamp(4rem, 9vw, 6.25rem) 0; background: var(--g700); }
+.section { padding: clamp(4rem, 9vw, 6rem) 0; background: var(--g700); }
 .section--tint { background: var(--g800); }
 .section--deep { background: var(--g800); }
 .section--dark { background: var(--ink); }
@@ -465,7 +520,7 @@ em { font-style: italic; }
 .about__facts li {
   display: flex; gap: .85rem; align-items: flex-start;
   color: var(--cream-2);
-  font-size: 1.0625rem;
+  font-size: var(--fs-sm);
 }
 .about__facts svg { flex: 0 0 auto; margin-top: .38rem; color: var(--gold); }
 @media (max-width: 860px) {
@@ -476,17 +531,33 @@ em { font-style: italic; }
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
+/* Profundidade por LUZ, não por sombra. Em paleta escura a sombra preta
+   quase não aparece; o volume vem do fio claro na aresta de cima (simula
+   luz vindo de acima) somado a uma sombra difusa que apoia a peça no fundo. */
 .card {
   background: var(--g800);           /* creme sobre g800 = 10.6:1 ✓ */
   border: 1px solid var(--line);
   border-radius: 3px;
   padding: var(--space-md) var(--space-sm) var(--space-sm);
-  transition: border-color .3s var(--ease), transform .3s var(--ease);
+  box-shadow:
+    inset 0 1px 0 rgba(219, 232, 199, .11),   /* fio de luz no topo */
+    0 2px 4px rgba(0, 0, 0, .18),
+    0 10px 28px -14px rgba(0, 0, 0, .45);
+  transition: border-color .3s var(--ease),
+              box-shadow .3s var(--ease),
+              transform .3s var(--ease);
 }
 .section--tint .card { background: var(--g900); }
-.card:hover { border-color: var(--line-strong); transform: translateY(-3px); }
+.card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(219, 232, 199, .20),
+    0 4px 8px rgba(0, 0, 0, .22),
+    0 18px 44px -18px rgba(0, 0, 0, .55);
+}
 /* ícones em coral: 3.4:1 sobre o verde principal — acima do mínimo de 3:1
    exigido para elementos gráficos, e muito mais vivo que o dourado */
 .card__icon {
@@ -494,8 +565,8 @@ em { font-style: italic; }
   margin-bottom: var(--space-sm);
   display: block;
 }
-.card h3 { font-size: 1.3rem; margin-bottom: .5rem; color: var(--cream); }
-.card p { color: var(--cream-2); font-size: 1.0625rem; line-height: 1.62; }
+.card h3 { font-size: var(--fs-lg); margin-bottom: .5rem; color: var(--cream); }
+.card p { color: var(--cream-2); font-size: var(--fs-sm); line-height: 1.62; }
 
 /* passos */
 .steps {
@@ -510,18 +581,18 @@ em { font-style: italic; }
   content: counter(step, decimal-leading-zero);
   position: absolute; top: -.35rem; left: 0;
   font-family: var(--serif);
-  font-size: 2.4rem;              /* número grande, vira elemento visual */
+  font-size: var(--fs-2xl);       /* número grande, vira elemento visual */
   line-height: 1;
   color: var(--gold);
 }
 .step::after {
   content: '';
-  position: absolute; top: 2.6rem; left: 0; right: 1.5rem;
+  position: absolute; top: 2.5rem; left: 0; right: 1.5rem;
   height: 1px; background: var(--line);
 }
 .step:last-child::after { right: 0; }
-.step h3 { font-size: 1.35rem; margin-bottom: .55rem; }
-.step p { color: var(--cream-2); font-size: 1.0625rem; line-height: 1.62; }
+.step h3 { font-size: var(--fs-lg); margin-bottom: .55rem; }
+.step p { color: var(--cream-2); font-size: var(--fs-sm); line-height: 1.62; }
 
 /* pilares — numerados "01." em 24px, como na referência */
 .pillars {
@@ -532,7 +603,7 @@ em { font-style: italic; }
 }
 .pillar { counter-increment: pilar; }
 .pillar h3 {
-  font-size: 1.5rem;
+  font-size: var(--fs-lg);
   line-height: 1.28;
   margin-bottom: .7rem;
   display: flex;
@@ -542,11 +613,11 @@ em { font-style: italic; }
 .pillar h3::before {
   content: counter(pilar, decimal-leading-zero);
   color: var(--coral);            /* 6.6:1 sobre o quase-preto */
-  font-size: 2.1rem;
+  font-size: var(--fs-2xl);
   line-height: 1;
   flex: 0 0 auto;
 }
-.pillar p { color: var(--cream-2); font-size: 1.0625rem; line-height: 1.62; }
+.pillar p { color: var(--cream-2); font-size: var(--fs-sm); line-height: 1.62; }
 
 /* FAQ */
 .faq { max-width: 780px; margin-inline: auto; }
@@ -556,7 +627,7 @@ em { font-style: italic; }
   list-style: none;
   padding: 1.5rem 3rem 1.5rem 0;
   position: relative;
-  font-size: 1.25rem;
+  font-size: var(--fs-lg);
   line-height: 1.4;
   color: var(--cream);
   transition: color .2s var(--ease);
@@ -573,14 +644,14 @@ em { font-style: italic; }
   transition: transform .3s var(--ease);
 }
 .faq details[open] summary::after { transform: translateY(-25%) rotate(-135deg); }
-.faq__answer { padding: 0 3rem 1.75rem 0; color: var(--cream-2); }
+.faq__answer { padding: 0 3rem 2rem 0; color: var(--cream-2); }
 
 /* CTA final — coluna estreita e centrada, título maior (58px na referência) */
 .cta-final {
   position: relative;
   background: var(--warm-2);      /* segunda quebra de matiz: 46° */
   color: var(--cream);
-  padding: clamp(4rem, 9vw, 6.25rem) 0;
+  padding: clamp(4rem, 9vw, 6rem) 0;
   text-align: center;
   overflow: hidden;
 }
@@ -592,14 +663,14 @@ em { font-style: italic; }
   opacity: .20;
 }
 .cta-final__inner { position: relative; }
-.cta-final h2 { font-size: clamp(2.15rem, 4.6vw, 3.6rem); line-height: 1.08; }
+.cta-final h2 { font-size: clamp(var(--fs-2xl), 4.6vw, var(--fs-4xl)); line-height: 1.08; }
 .cta-final p { color: var(--cream-2); margin: var(--space-sm) 0 var(--space-md); }
 
 /* rodapé */
 .site-footer {
   background: var(--g900);
   padding: var(--space-xl) 0 var(--space-md);
-  font-size: 1rem;
+  font-size: var(--fs-md);
 }
 .site-footer__grid {
   display: grid;
@@ -610,7 +681,7 @@ em { font-style: italic; }
 }
 .site-footer h4 {
   font-family: var(--sans);
-  font-size: .6875rem;
+  font-size: var(--fs-2xs);
   font-weight: 500;
   letter-spacing: .18em;
   text-transform: uppercase;
@@ -631,7 +702,7 @@ em { font-style: italic; }
   justify-content: space-between;
   padding-top: var(--space-md);
   font-family: var(--sans);
-  font-size: .75rem;
+  font-size: var(--fs-xs);
   letter-spacing: .04em;
   color: var(--cream-2);
 }
@@ -642,7 +713,7 @@ em { font-style: italic; }
 /* botão flutuante whatsapp */
 .wa-float {
   position: fixed;
-  right: 1.25rem; bottom: 1.25rem;
+  right: 1.5rem; bottom: 1.5rem;
   z-index: 90;
   width: 56px; height: 56px;
   border-radius: 50%;
@@ -655,14 +726,26 @@ em { font-style: italic; }
 .wa-float:hover { transform: scale(1.07); background: var(--coral-soft); }
 
 /* ---------- revelação no scroll ----------
-   Visível por padrão; só escondemos quando o JS confirma que está rodando. */
-.js .reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity .55s var(--ease), transform .55s var(--ease);
+   Visível por padrão; só escondemos quando o JS confirma que está rodando.
+
+   Usa `animation`, não `transition`, de propósito. A versão anterior
+   declarava `transition: opacity, transform` aqui e, por ter especificidade
+   maior que `.card`, substituía o shorthand inteiro do componente — o hover
+   do card perdia a animação de borda e ficava lento (.55s em vez de .3s).
+   Animação e transição são canais separados, então agora convivem.
+
+   Sem `forwards`: com fill-mode a última keyframe travaria o `transform`
+   e o `translateY(-3px)` do hover não funcionaria. */
+.js .reveal { opacity: 0; }
+.js .reveal.is-visible {
+  opacity: 1;
+  animation: revelar .55s var(--ease);
 }
-.js .reveal.is-visible { opacity: 1; transform: none; }
+@keyframes revelar {
+  from { opacity: 0; transform: translateY(14px); }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .js .reveal { opacity: 1; transform: none; }
+  .js .reveal { opacity: 1; }
+  .js .reveal.is-visible { animation: none; }
 }
