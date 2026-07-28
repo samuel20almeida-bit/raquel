@@ -645,7 +645,7 @@ em { font-style: italic; }
 /* cards */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 1.5rem;
 }
 /* Profundidade por LUZ, não por sombra. Em paleta escura a sombra preta
@@ -709,7 +709,7 @@ em { font-style: italic; }
 /* pilares — numerados "01." em 24px, como na referência */
 .pillars {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: var(--space-lg) var(--space-lg);
   counter-reset: pilar;
 }
@@ -737,7 +737,7 @@ em { font-style: italic; }
 .faq summary {
   cursor: pointer;
   list-style: none;
-  padding: 1.5rem 3rem 1.5rem 0;
+  padding: 1.5rem 2.5rem 1.5rem 0;
   position: relative;
   font-size: var(--fs-lg);
   line-height: 1.4;
@@ -756,7 +756,11 @@ em { font-style: italic; }
   transition: transform .3s var(--ease);
 }
 .faq details[open] summary::after { transform: translateY(-25%) rotate(-135deg); }
-.faq__answer { padding: 0 3rem 2rem 0; color: var(--txt-2); }
+.faq__answer { padding: 0 2.5rem 2rem 0; color: var(--txt-2); }
+@media (max-width: 600px) {
+  .faq summary { padding-right: 2rem; }
+  .faq__answer { padding-right: 0; }   /* nada à direita compete com a seta aqui */
+}
 
 /* CTA final — coluna estreita e centrada, título maior (58px na referência) */
 .cta-final {
@@ -939,4 +943,16 @@ em { font-style: italic; }
 @media (prefers-reduced-motion: reduce) {
   .card:hover { transform: none; }
   .card:hover .card__icon { transform: none; }
+}
+
+/* No mobile as grades viram uma coluna só, e os 64px pensados para separar
+   COLUNAS ficam soltos demais entre itens empilhados. Também aproveita para
+   compactar o rodapé, que ocupava 1,2 tela para 48 palavras. */
+@media (max-width: 700px) {
+  .pillars { gap: var(--space-md); }
+  .steps   { gap: var(--space-md); }
+  .site-footer { padding-top: var(--space-lg); }
+  .site-footer__grid { gap: var(--space-md); padding-bottom: var(--space-md); }
+  /* e-mail longo não pode empurrar a largura da página */
+  .site-footer a { overflow-wrap: anywhere; }
 }
