@@ -4,7 +4,9 @@
    Todos os pares de cor verificados em WCAG 2.1 (tabela no README).
    ========================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Sorts+Mill+Goudy:ital@0;1&display=swap');
+/* As fontes são declaradas no <head> do index.html, não aqui. Um @import
+   nesta posição obriga o navegador a baixar e interpretar este arquivo
+   inteiro antes de sequer descobrir que precisa das fontes. */
 
 /* ---------- tokens ---------- */
 :root {
@@ -121,6 +123,11 @@ p:last-child { margin-bottom: 0; }
   width: min(100% - 2.5rem, var(--container));
   margin-inline: auto;
 }
+
+/* Sem isto, clicar num link do menu leva a seção para debaixo do header
+   fixo: ele tem ~90px e o título encostava a 11px dele. */
+:target,
+main > section[id] { scroll-margin-top: 7rem; }
 .measure { max-width: var(--measure); }
 
 .skip-link {
@@ -293,6 +300,11 @@ em { font-style: italic; }
 }
 .nav__list a:hover { color: var(--cream); }
 .nav__list a:hover::after { width: 100%; }
+
+/* Seção em que o visitante está. Numa página de ~6.600px com 5 links, não
+   havia nenhuma indicação de onde ele se encontra. */
+.nav__list a[aria-current="true"] { color: var(--cream); }
+.nav__list a[aria-current="true"]::after { width: 100%; background: var(--coral); }
 
 .nav__cta { padding: .5rem 1.5rem; min-height: 44px; font-size: var(--fs-sm); }
 
@@ -473,8 +485,14 @@ em { font-style: italic; }
 
 /* A atribuição fica na MESMA linha da citação, como na referência — é isso
    que mantém a faixa baixa (uma linha de texto + respiro). */
+/* `max-width` em `em` (não em px) para o limite acompanhar o tamanho da
+   fonte: as duas faixas têm corpos diferentes e assim ambas ficam em torno
+   de 56 caracteres por linha. Sem isto a citação corria os 1170px inteiros,
+   chegando a 84 caracteres — bem acima dos 75 legíveis. */
 .quote-strip blockquote {
   margin: 0;
+  max-width: 28em;
+  margin-inline: auto;
   line-height: 1.34;
   text-wrap: balance;
 }
@@ -585,11 +603,14 @@ em { font-style: italic; }
 .card p { color: var(--cream-2); font-size: var(--fs-sm); line-height: 1.62; }
 
 /* passos */
+/* Eram 4 colunas de ~275px, o que dava 32 caracteres por linha — leitura
+   picotada. Em 2 colunas cada passo fica com ~68 caracteres, dentro da
+   faixa legível, e os 4 passos formam um 2x2 limpo. */
 .steps {
   list-style: none; padding: 0; margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: var(--space-md) 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+  gap: var(--space-lg) var(--space-lg);
   counter-reset: step;
 }
 .step { position: relative; padding-top: 3.5rem; counter-increment: step; }

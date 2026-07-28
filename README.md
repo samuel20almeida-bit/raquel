@@ -30,6 +30,19 @@ Enquanto não forem preenchidos, o site mostra dados fictícios óbvios.
 | Instagram | @raquel.niejelski.psique |
 | Foto | `assets/raquel.jpg` |
 
+### Auditoria de UX — situação
+
+Dos 16 problemas mapeados, **13 estão fechados**. Os 3 restantes dependem de
+informação que só a Raquel tem (ver tabela abaixo).
+
+Fechados: links de WhatsApp mortos · CRP falso · e-mail e Instagram
+fictícios · citação com 84 caracteres por linha · fontes carregadas em
+cascata serial por `@import` · falta de `scroll-margin-top` · menu sem
+seção ativa · `<br>` forçado em títulos · duas citações do mesmo autor ·
+coluna dos passos com 32 caracteres · rótulos de CTA inconsistentes ·
+rótulo que perguntava e título que não respondia · CTA secundário vago ·
+nota do hero repetindo a FAQ.
+
 ### ⚠ Ainda pendente
 
 | # | O que | Onde (linha do `index.html`) |
