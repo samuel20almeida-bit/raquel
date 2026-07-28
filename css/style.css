@@ -110,6 +110,11 @@
   --measure:   64ch;
 
   --ease: cubic-bezier(.22, .61, .36, 1);
+
+  /* Escala ÚNICA do padrão botânico. Estava em 265px no hero, 210px na
+     faixa e 240px na chamada — em seções vizinhas o olho lê na hora que
+     os ladrilhos não encaixam. */
+  --padrao: 240px;
 }
 
 /* ---------- reset ---------- */
@@ -383,18 +388,26 @@ em { font-style: italic; }
   padding: calc(var(--space-xl) + 2rem) 0 var(--space-xl);
   background-color: var(--g700);
 }
+/* O padrão vinha em `opacity: 1`, escurecido só pelo véu — muito mais
+   presente aqui do que nas outras seções, e a intensidade despencava na
+   emenda com a faixa de baixo. Agora usa opacidade explícita, na mesma
+   ordem de grandeza do resto. */
 .hero::before {
   content: '';
   position: absolute;
   inset: -10% 0;               /* sobra para o deslocamento não descobrir a borda */
   background-image: url('../assets/padrao.svg');
-  background-size: 265px 265px;
+  background-size: var(--padrao) var(--padrao);
+  opacity: .30;
   pointer-events: none;
 }
+/* Véu de legibilidade. A cor estava fixa em rgba(32,48,26) — o --g900
+   ANTIGO. Quando a paleta mudou, o hero ficou tingido por uma cor que não
+   existe mais no sistema. Agora acompanha a superfície da seção. */
 .hero::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(rgba(32, 48, 26, .80), rgba(32, 48, 26, .88));
+  background: linear-gradient(rgba(58, 72, 50, .46), rgba(58, 72, 50, .60));
   pointer-events: none;
 }
 .hero__inner {
@@ -420,7 +433,9 @@ em { font-style: italic; }
   font-family: var(--sans);
   font-size: var(--fs-sm);
   letter-spacing: .04em;
-  color: var(--sage-pale);
+  /* --sage-pale reprova aqui: sobre a folha mais clara do padrão dá 3.9:1.
+     O hero é a única superfície texturizada sob texto pequeno. */
+  color: var(--cream-2);
 }
 @media (max-width: 700px) {
   .hero { min-height: 0; padding: var(--space-xl) 0; }
@@ -504,12 +519,16 @@ em { font-style: italic; }
   text-align: center;
   overflow: hidden;
 }
-.quote-strip::before {
+/* A faixa escura vem logo abaixo do hero, que é texturizado. Duas seções
+   padronadas coladas fazem a divisão sumir numa mancha — foi o que deixou
+   a emenda esquisita. Ela fica LISA de propósito: é o contraste entre
+   textura e superfície limpa que corta a página, como na referência. */
+.quote-strip--mid::before {
   content: '';
   position: absolute; inset: -18% 0;   /* sobra vertical para o parallax */
   background-image: url('../assets/padrao.svg');
-  background-size: 210px 210px;
-  opacity: .22;      /* mais alto: traz o coral e o azul das flores à tona */
+  background-size: var(--padrao) var(--padrao);
+  opacity: .22;      /* traz o coral e o azul das flores à tona */
   pointer-events: none;
 }
 .quote-strip__inner { position: relative; }
@@ -741,7 +760,7 @@ em { font-style: italic; }
   content: '';
   position: absolute; inset: -18% 0;   /* sobra vertical para o parallax */
   background-image: url('../assets/padrao.svg');
-  background-size: 240px 240px;
+  background-size: var(--padrao) var(--padrao);
   opacity: .20;
   pointer-events: none;
 }
@@ -856,7 +875,7 @@ em { font-style: italic; }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .hero::before,
-    .quote-strip::before,
+    .quote-strip--mid::before,
     .cta-final::before {
       animation: deriva-textura linear both;
       animation-timeline: view();
