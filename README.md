@@ -43,17 +43,40 @@ coluna dos passos com 32 caracteres · rótulos de CTA inconsistentes ·
 rótulo que perguntava e título que não respondia · CTA secundário vago ·
 nota do hero repetindo a FAQ.
 
-### ⚠ Ainda pendente
+### ✅ Nenhum placeholder restante
 
-| # | O que | Onde (linha do `index.html`) |
+Formação (FAE), pós-graduação (PUC-PR), abordagem (Logoterapia) e público
+atendido estão preenchidos.
+
+Sobre o **valor da sessão**: a FAQ não publica o número. A resposta diz que
+a Raquel combina no primeiro contato pelo WhatsApp, o que é uma escolha
+legítima e comum na área. Se ela preferir publicar, é só trocar o texto
+daquela pergunta (procure por `TROCAR` no `index.html`).
+
+---
+
+## Sobre a escrita
+
+A copy foi revisada para não soar gerada por IA. Os padrões que foram
+removidos, com a medição antes e depois:
+
+| Marca | Antes | Depois |
 |---|---|---|
-| 1 | **Formação e instituição** (`[instituição]`) | linha 198 |
-| 2 | **Abordagem / especialização** (`[especificar]`) | linha 203 |
-| 3 | **Valor da sessão e formas de pagamento** | linha 337 |
+| Travessões (`—`) | 13, um a cada 52 palavras | 2, só nas atribuições das citações |
+| Tricolon com anáfora | "sem X, sem Y, sem Z" | nenhum |
+| "não é X, é Y" | presente | nenhum |
+| Vocabulário-clichê | "profundidade", "sem julgamento", "espaço reservado" | nenhum |
+| Variação de frase | — | 3 a 41 palavras, desvio 6,6 |
 
-O item 3 é o mais sensível: "Qual o valor da sessão?" costuma ser a pergunta
-mais clicada da FAQ, e hoje ela abre para um texto entre colchetes. Criar a
-expectativa e não entregar é pior do que não ter a pergunta.
+Também foi corrigido o **feminino genérico** ("seguirmos juntas", "seja bem
+cuidada"). A Raquel atende pessoas LGBTQIA+, e concordância no feminino
+exclui parte desse público. O texto agora é neutro.
+
+**Ao editar textos daqui pra frente**, os hábitos que mais entregam escrita
+de IA: travessão no lugar de vírgula ou ponto, listas de três itens onde
+dois bastariam, frases espelhadas do tipo "não é A, é B", e todas as frases
+com o mesmo comprimento. Frase curta seguida de frase longa soa humano;
+ritmo regular soa automático.
 
 ### A foto ✅ já está no lugar
 
