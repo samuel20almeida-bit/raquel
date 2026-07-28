@@ -20,19 +20,27 @@ site-raquel/
 Tudo que precisa de dado real está marcado com `<!-- TROCAR -->` no `index.html`.
 Enquanto não forem preenchidos, o site mostra dados fictícios óbvios.
 
+### ✅ Já preenchido
+
+| O que | Valor |
+|---|---|
+| CRP | 08/45090 |
+| WhatsApp | (41) 98821-8155 — nos 5 CTAs |
+| E-mail | Raquel.aparecida.psi@gmail.com |
+| Instagram | @raquel.niejelski.psique |
+| Foto | `assets/raquel.jpg` |
+
+### ⚠ Ainda pendente
+
 | # | O que | Onde (linha do `index.html`) |
 |---|---|---|
-| 1 | **Foto da Raquel** — salvar como `assets/raquel.jpg` | usada nas linhas 94 e 119 |
-| 2 | **Número do CRP** (`CRP 00/00000`) | linhas 35 e 426 |
-| 3 | **WhatsApp** (`5500000000000` → `55` + DDD + número) | linhas 48, 78, 406, 446, 462 |
-| 4 | **Formação e instituição** (`[instituição]`) | linha 151 |
-| 5 | **Abordagem / especialização** (`[especificar]`) | linha 156 |
-| 6 | **Valor da sessão e formas de pagamento** | linha 342 |
-| 7 | **E-mail** (`contato@exemplo.com`) | linha 447 |
-| 8 | **Instagram** (`instagram.com/usuario`) | linha 448 |
+| 1 | **Formação e instituição** (`[instituição]`) | linha 198 |
+| 2 | **Abordagem / especialização** (`[especificar]`) | linha 203 |
+| 3 | **Valor da sessão e formas de pagamento** | linha 337 |
 
-> **Sobre o CRP:** deixei `00/00000` de propósito. Não invente nem aproxime —
-> número de registro profissional é dado verificável e precisa ser o real dela.
+O item 3 é o mais sensível: "Qual o valor da sessão?" costuma ser a pergunta
+mais clicada da FAQ, e hoje ela abre para um texto entre colchetes. Criar a
+expectativa e não entregar é pior do que não ter a pergunta.
 
 ### A foto ✅ já está no lugar
 
