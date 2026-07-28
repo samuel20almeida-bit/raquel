@@ -609,11 +609,22 @@ em { font-style: italic; }
 .section__head p { color: var(--txt-2); margin-top: var(--space-sm); }
 
 /* sobre */
+/* O texto da Raquel é bem mais alto que o retrato: 1415px contra 603px, o
+   que deixava a foto boiando no meio de 812px de vão. Em vez de encurtar o
+   texto dela, o retrato acompanha a leitura.
+   `align-items: start` é obrigatório: com `center` o item de grid estica e o
+   sticky fica sem folga para deslizar. */
 .about__grid {
   display: grid;
   grid-template-columns: .85fr 1.15fr;
   gap: clamp(2.5rem, 6vw, 5rem);
-  align-items: center;
+  align-items: start;
+}
+@media (min-width: 861px) {
+  #sobre .portrait-wrap {
+    position: sticky;
+    top: 7rem;            /* mesma folga do scroll-margin, limpa o header */
+  }
 }
 .about__grid p { color: var(--txt-2); }
 .about__facts {
